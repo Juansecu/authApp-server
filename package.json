@@ -1,0 +1,38 @@
+{
+  "name": "authapp-server",
+  "version": "1.0.0",
+  "description": "Server for authApp",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon -q .",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juansecu/authApp-server.git"
+  },
+  "keywords": [
+    "authApp",
+    "jsonwebtoken",
+    "mongodb",
+    "nodejs"
+  ],
+  "author": "Juansecu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juansecu/authApp-server/issues"
+  },
+  "homepage": "https://github.com/Juansecu/authApp-server#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}

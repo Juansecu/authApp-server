@@ -1,4 +1,5 @@
 const { request, response } = require('express');
+const { validationResult } = require('express-validator');
 
 /**
  * @param {request} req

@@ -1,7 +1,9 @@
-const { request, response } = require('express');
 const { hashSync } = require('bcryptjs');
+const { request, response } = require('express');
 
 const User = require('../models/User');
+
+const { generateJwt } = require('../libs/jwt');
 
 /**
  * @param {request} req
@@ -19,8 +21,11 @@ module.exports.addUser = async (req, res) => {
                 message: 'User already exists!'
             });
 
+        let token;
+
         user = new User({ email, firstName, lastName, password });
         user.password = hashSync(password, 10);
+        token = await generateJwt(user.id, user.firstName);
 
         await user.save();
 
@@ -28,7 +33,8 @@ module.exports.addUser = async (req, res) => {
             ok: true,
             userId: user.id,
             firstName,
-            lastName
+            lastName,
+            token
         });
     } catch (error) {
         console.error(error);

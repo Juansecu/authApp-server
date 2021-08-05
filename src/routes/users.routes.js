@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { checkBody } = require('../middlewares/checkBody.middleware');
+const { checkJwt } = require('../middlewares/checkJwt.middleware');
 
 const {
     addUser,
@@ -58,6 +59,6 @@ usersRouter
         addUser
     );
 
-usersRouter.route('/renew-token').get(renewToken);
+usersRouter.route('/renew-token').get([checkJwt], renewToken);
 
 module.exports = usersRouter;

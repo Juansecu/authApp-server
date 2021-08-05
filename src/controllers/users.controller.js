@@ -93,6 +93,24 @@ module.exports.login = async (req, res) => {
  * @param {request} req
  * @param {response} res
  */
-module.exports.renewToken = (req, res) => {
-    res.send((Math.random() * 50).toString());
+module.exports.renewToken = async (req, res) => {
+    const { firstName, userId } = req;
+
+    try {
+        const token = await generateJwt(userId, firstName);
+
+        return res.json({
+            ok: true,
+            userId,
+            firstName,
+            token
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            ok: false,
+            error: 'Internal server error. Please contact with the administrator.'
+        });
+    }
 };

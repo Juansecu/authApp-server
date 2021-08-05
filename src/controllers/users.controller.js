@@ -1,4 +1,4 @@
-const { hashSync } = require('bcryptjs');
+const { compareSync, hashSync } = require('bcryptjs');
 const { request, response } = require('express');
 
 const User = require('../models/User');
@@ -50,8 +50,43 @@ module.exports.addUser = async (req, res) => {
  * @param {request} req
  * @param {response} res
  */
-module.exports.login = (req, res) => {
-    res.send('Successfully logged in!');
+module.exports.login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        let user = await User.findOne({ email });
+
+        if (!user)
+            return res.status(401).json({
+                ok: false,
+                message: 'User not found!'
+            });
+
+        const isValidPassword = compareSync(password, user.password);
+
+        if (!isValidPassword)
+            return res.status(401).json({
+                ok: false,
+                message: 'Wrong password!'
+            });
+
+        let token = await generateJwt(user.id, user.firstName);
+
+        return res.json({
+            ok: true,
+            userId: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            token
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            ok: false,
+            error: 'Internal server error. Please contact with the administrator.'
+        });
+    }
 };
 
 /**

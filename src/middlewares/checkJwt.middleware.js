@@ -17,9 +17,10 @@ module.exports.checkJwt = (req, res, next) => {
     try {
         const { firstName, userId } = verify(token, process.env.JWT_SECRET);
 
-        req.user.userId = userId;
-        req.user.firstName = firstName;
+        req.userId = userId;
+        req.firstName = firstName;
     } catch (error) {
+        console.error(error);
         return res.status(403).json({
             ok: false,
             message: 'Invalid token!'
